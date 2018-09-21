@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+#promocion:
+#    path: /promocion
+#    controller: App\Controller\LandingController::promocion
