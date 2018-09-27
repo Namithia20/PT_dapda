@@ -29,6 +29,7 @@ class LandingController extends AbstractController
      */
     public function promocion(Request $request)
     {
+        $entityManager = $this->getDoctrine()->getManager();
         $client = new Client();
 
         $form = $this->createFormBuilder($client)
@@ -77,10 +78,18 @@ class LandingController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
-        {
-            $client = $form->getData();
+        {    
+            try{        
+                $client = $form->getData();
 
-            return $this->redirectToRoute('gracias');
+                $entityManager->persist($client);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('gracias');
+            }
+            catch(Exception $e){
+                
+            }
         }
 
         return $this->render('promocion.html.twig', array(

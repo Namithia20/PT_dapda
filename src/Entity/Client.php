@@ -2,29 +2,62 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
+ */
+
 class Client
 {
-    protected $name;
-    protected $surname;
-    protected $phone;
-    protected $email;
-    protected $car_type;
-    protected $car;
-    protected $preference_call;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
-   /* public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata->addPropertyConstraint('phone', new Assert\Regex(array(
-            'pattern' => '^[679]\d{9}$',
-            'htmlPattern' => '^[679]\d{9}$',
-            'match' => false,
-            'message' => 'Indique un numero valido'
-        )));
-    }*/
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $surname;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $car_type;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $car;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $preference_call;
+
+
+    /**
+     * getter methods
+     */
     public function getName()
     {
         return $this->name;
@@ -61,6 +94,9 @@ class Client
     }
 
 
+    /**
+     * setter methods
+     */
     public function setName($_name)
     {
         $this->name = $_name;
