@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 use Symfony\Component\Form\FormEvent;
 //use Symfony\Component\Form\FormInterface;
@@ -64,12 +65,12 @@ class LandingController extends AbstractController
             ->add('Preference_call', ChoiceType::class, array( 
                 'label' => 'Preferencia',
                 'placeholder' => 'Seleccione preferencia',
-                'disabled' => false,
                 'choices' => array(
                     'Mañana' => 0,
                     'Tarde' => 1,
                     'Noche' => 2
-                )
+                ),
+                'disabled' => false
             ))             
             ->add('Send', SubmitType::class, array('label' => 'Enviar'))
             ->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'))
@@ -81,6 +82,26 @@ class LandingController extends AbstractController
         {    
             try{        
                 $client = $form->getData();
+                
+                $preference = $request->query->get('preferencia');
+                if($preference != NULL)
+                {                     
+                    $val;
+                    switch($preference)
+                    {
+                        case "mañana":  
+                            $val = 0;                            
+                        break;
+                        case "tarde":  
+                            $val = 1;  
+                        break;
+                        case "noche": 
+                            $val = 2;   
+                        break;
+                        default: break;
+                    }
+                    $client->setPreferenceCall($val);
+                }                
 
                 $entityManager->persist($client);
                 $entityManager->flush();
@@ -91,17 +112,49 @@ class LandingController extends AbstractController
 
             }
         }
+        
+            $preference = $request->query->get('preferencia');
+            if($preference != NULL)
+            {
+                $options = $form->get('Preference_call')->getConfig()->getOptions();                      
+                $val;
+                switch($preference)
+                {
+                    case "mañana":  
+                        $options['data']  = 0; 
+                        $options['empty_data']  = 'Mañana';
+                        $val = 0;                            
+                    break;
+                    case "tarde": 
+                        $options['data']  = 1;
+                        $options['empty_data']  = 'Tarde';   
+                        $val = 1;  
+                    break;
+                    case "noche": 
+                        $options['data']  = 2;
+                        $options['empty_data']  = 'Noche';  
+                        $val = 2;   
+                    break;
+                    default: break;
+                }
 
-        return $this->render('promocion.html.twig', array(
-            'form' => $form->createView(),
+                //$options['attr'] = array('readonly' => true);
+                $options['disabled'] = true;
+                $form->add('Preference_call', ChoiceType::class, $options);
+            }                
+
+            return $this->render('promocion.html.twig', array(
+                'form' => $form->createView(),
+        
         ));
     }   
     
     function onPreSubmit(FormEvent $event) 
     {
        $form = $event->getForm();
-
        $val_type = $event->getData()['Car_type'];
+
+       
 
         //var_dump($val_type);
        if($val_type!="" || $val_type == null)
@@ -121,8 +174,7 @@ class LandingController extends AbstractController
             $options = $form->get('Car')->getConfig()->getOptions();
             $options['disabled'] = true;
             $form->add('Car', ChoiceType::class, $options);
-       }      
-
+       }   
     }
 
     /** 
