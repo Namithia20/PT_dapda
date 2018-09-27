@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,13 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
 use Symfony\Component\Form\FormEvent;
-//use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvents;
-//use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-//use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Client;
 
@@ -80,67 +74,44 @@ class LandingController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {    
-            try{        
+
+            //try{        
                 $client = $form->getData();
-                
-                $preference = $request->query->get('preferencia');
-                if($preference != NULL)
-                {                     
-                    $val;
-                    switch($preference)
-                    {
-                        case "mañana":  
-                            $val = 0;                            
-                        break;
-                        case "tarde":  
-                            $val = 1;  
-                        break;
-                        case "noche": 
-                            $val = 2;   
-                        break;
-                        default: break;
-                    }
-                    $client->setPreferenceCall($val);
-                }                
+         
 
                 $entityManager->persist($client);
                 $entityManager->flush();
 
                 return $this->redirectToRoute('gracias');
-            }
-            catch(Exception $e){
+            //}
+            //catch(Exception $e){
 
-            }
+            //}
         }
         
             $preference = $request->query->get('preferencia');
             if($preference != NULL)
-            {
-                $options = $form->get('Preference_call')->getConfig()->getOptions();                      
-                $val;
+            {                    
+                $val=-1;
                 switch($preference)
                 {
                     case "mañana":  
-                        $options['data']  = 0; 
-                        $options['empty_data']  = 'Mañana';
-                        $val = 0;                            
+                        $val = "Mañana";                            
                     break;
-                    case "tarde": 
-                        $options['data']  = 1;
-                        $options['empty_data']  = 'Tarde';   
-                        $val = 1;  
+                    case "tarde":    
+                        $val = "Tarde";  
                     break;
                     case "noche": 
-                        $options['data']  = 2;
-                        $options['empty_data']  = 'Noche';  
-                        $val = 2;   
+                        $val = "Noche";   
                     break;
-                    default: break;
                 }
 
-                //$options['attr'] = array('readonly' => true);
-                $options['disabled'] = true;
-                $form->add('Preference_call', ChoiceType::class, $options);
+                $options['attr'] = array('readonly' => true);
+                $form->add('Preference_call', TextType::class, array(
+                    'attr' => array('readonly' => true),
+                    'label' => 'Preferencia',
+                    'data' => $val
+                ));
             }                
 
             return $this->render('promocion.html.twig', array(
@@ -152,11 +123,8 @@ class LandingController extends AbstractController
     function onPreSubmit(FormEvent $event) 
     {
        $form = $event->getForm();
-       $val_type = $event->getData()['Car_type'];
+       $val_type = $event->getData()['Car_type'];       
 
-       
-
-        //var_dump($val_type);
        if($val_type!="" || $val_type == null)
        {
             $options = $form->get('Car')->getConfig()->getOptions();
@@ -174,7 +142,26 @@ class LandingController extends AbstractController
             $options = $form->get('Car')->getConfig()->getOptions();
             $options['disabled'] = true;
             $form->add('Car', ChoiceType::class, $options);
-       }   
+       }  
+       $data = $event->getData();
+       $val_pref = $data['Preference_call']; 
+
+       if($val_pref!="" || $val_pref == null)
+       {
+            switch($val_pref)
+            {
+                case "Mañana":  
+                    $data['Preference_call'] = 0;                            
+                break;
+                case "Tarde":  
+                    $data['Preference_call'] = 1;
+                break;
+                case "Noche":  
+                 $data['Preference_call'] = 2;
+                break;
+            }
+       }
+       $event->setData($data);
     }
 
     /** 
