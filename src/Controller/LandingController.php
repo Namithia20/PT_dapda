@@ -32,7 +32,7 @@ class LandingController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $client = new Client();
 
-        $form = $this->createFormBuilder($client)
+        $form = $this->createFormBuilder($client, array('attr'=>array('id' =>'promoForm')))
             ->add('Name', TextType::class, array('label' => 'Nombre'))
             ->add('Surname', TextType::class, array('label' => 'Apellidos'))
             ->add('Phone', TextType::class, array(
@@ -88,7 +88,7 @@ class LandingController extends AbstractController
                 return $this->redirectToRoute('gracias');
             }
             catch(Exception $e){
-                
+
             }
         }
 

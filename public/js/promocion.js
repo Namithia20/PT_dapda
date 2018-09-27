@@ -1,5 +1,8 @@
 
 $(document).ready(function(){
+    /**
+     * Change car brand
+     */
     $('.carType').change(
         function(){        
             var car_type = $(this).val();
@@ -31,4 +34,13 @@ $(document).ready(function(){
 
         }
     );
+
+    /**
+     * Loading experience
+     */
+    $(function() {
+        $('#promoForm').on('submit', function() {
+            $('#wait_lightbox').show(0);
+        });
+    });
 });
