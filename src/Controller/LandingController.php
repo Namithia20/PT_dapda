@@ -25,7 +25,7 @@ use App\Entity\Client;
 class LandingController extends AbstractController
 {
     /** 
-     * @Route("/promocion")
+     * @Route("/promocion", name="promo")
      */
     public function promocion(Request $request)
     {
@@ -76,6 +76,13 @@ class LandingController extends AbstractController
 
         $form->handleRequest($request);
 
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $client = $form->getData();
+
+            return $this->redirectToRoute('gracias');
+        }
+
         return $this->render('promocion.html.twig', array(
             'form' => $form->createView(),
         ));
@@ -87,7 +94,7 @@ class LandingController extends AbstractController
 
        $val_type = $event->getData()['Car_type'];
 
-        var_dump($val_type);
+        //var_dump($val_type);
        if($val_type!="" || $val_type == null)
        {
             $options = $form->get('Car')->getConfig()->getOptions();
@@ -108,4 +115,20 @@ class LandingController extends AbstractController
        }      
 
     }
+
+    /** 
+     * @Route("/gracias-promocion", name="gracias")
+     */
+    public function gracias(Request $request)
+    {
+        $referer = $request->headers->get('referer');
+
+        if($referer != NULL && strpos($referer, 'promocion') != false)
+        {
+            return $this->render('gracias.html.twig');
+        }
+        
+        return $this->redirectToRoute('promo');       
+    }
+
 }
