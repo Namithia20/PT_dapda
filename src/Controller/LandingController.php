@@ -22,7 +22,7 @@ class LandingController extends AbstractController
     /** 
      * @Route("/promocion", name="promo")
      */
-    public function promocion(Request $request)
+    public function promocion(Request $request, \Swift_Mailer $mailer)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $client = new Client();
@@ -76,11 +76,11 @@ class LandingController extends AbstractController
         {    
 
             //try{        
-                $client = $form->getData();
-         
-
+                $client = $form->getData();  
                 $entityManager->persist($client);
                 $entityManager->flush();
+
+                $this->sendEmail($client->getName(), $client->getSurname(), $client->getEmail(), $mailer);
 
                 return $this->redirectToRoute('gracias');
             //}
@@ -177,6 +177,22 @@ class LandingController extends AbstractController
         }
         
         return $this->redirectToRoute('promo');       
+    }
+
+    public function sendEmail($name, $surname, $email, $mailer)
+    { 
+        $message =(new \Swift_Message('Prueba'))           
+            ->setFrom('emailpersonaltesting@gmail.com')
+            ->setTo($email)
+            ->setBody(
+                $this->renderView(
+                    'email.html.twig',
+                    array('name' => $name, 'surname' => $surname)
+                ),
+                'text/html'
+            )            
+        ;
+        $mailer->send($message);
     }
 
 }
