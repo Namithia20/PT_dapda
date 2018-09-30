@@ -3,11 +3,43 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link href="{{ asset('css/landing/landingStyle.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
+        {% endblock %}
     </head>
     <body>
         {% block body %}
-           <div>Gracias</div>
+        <div class="container">
+           <div class="row justify-content-center">
+                 <div class="landing col-lg-12 thanks_block">
+                    <div class="row">
+                            <div class="col-lg-12 ">
+                                <img class="img-responsive center-block" src="{{ asset('images/thanks.jpg') }}" alt="img-thanks"/>
+                            </div>                            
+                    </div>
+                    <div class="row thanks_message">
+                        <div class="col-lg-12 text_info_thanks">
+                            <p>
+                                Gracias por confiar en nosotros.
+                            </p>
+                            <p>
+                                Sus datos han quedado registrados correctamente en nuestro sistema conforme a la Ley Orgánica 15/1999, de 13 de diciembre, de Protección de Datos de Carácter Personal.
+                            </p>
+                            <p>
+                                En breve uno de nuestros comerciales se pondrá en cotacto con usted para informarle de nuestras ofertas.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row foot">
+                        <footer>
+                            <p>© 2018<a href="#"> Landing Dapda</a>, All rights reserved 2018.</p>
+                        </footer>
+                    </div>
+                 </div>
+           </div>
+           
+        </div>
         {% endblock %}
         {% block javascripts %}
         {% endblock %}

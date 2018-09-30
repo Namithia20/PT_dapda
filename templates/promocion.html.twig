@@ -4,31 +4,66 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-       <link href="{{ asset('css/loadingStyle.css') }}" rel="stylesheet">
+       <link href="{{ asset('css/landing/loadingStyle.css') }}" rel="stylesheet">
+       <link href="{{ asset('css/landing/landingStyle.css') }}" rel="stylesheet">
+       <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     </head>
     <body>
         {% block body %}
-            <div class="lightbox" id="wait_lightbox">
-                <div class="row centered">
-                    <div class="col-lg-12">
-                        <div class="loader col-lg-12"></div>
-                        <p>Procesando datos...</p>
+            <div class="container">
+                <div class="lightbox" id="wait_lightbox">
+                    <div class="row centered">
+                        <div class="col-lg-12">
+                            <div class="loader col-lg-12"></div>
+                            <p>Procesando datos...</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <img src="{{ asset('images/img-promo.jpg') }}" alt="img-promo"/>
-            </div>
-            <div>
-                <p>Formulario</p>
-                {{form_start(form)}}
-                    {{ form_widget(form) }}
-                {{ form_end(form) }}
+                <div class="row justify-content-center">
+                    <div class="landing col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                <img class="img-responsive center-block" src="{{ asset('images/img-promo.png') }}" alt="img-promo"/>
+                            </div>                            
+                        </div>
+                        <div class="row title_form">
+                            Aproveche nuestras ofertas, informese
+                        </div>
+                        <div class="row form-landing">  
+                            <form id="promoForm" method="post" class="">
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        {% for field in ['Name','Phone','Car_type','Preference_call'] 
+                                            if (attribute(form, field) is defined) %}
+                                            {{ form_row(attribute(form, field)) }}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        {% for field in ['Surname','Email','Car'] 
+                                            if (attribute(form, field) is defined) %}
+                                            {{ form_row(attribute(form,field)) }}
+                                        {% endfor %}                                    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        {{ form_rest(form) }}
+                                    </div>  
+                                </div>                             
+                            </form>
+                        </div>
+                    <div>
+                    <div class="row foot">
+                        <footer>
+                            <p>© 2018<a href="#"> Landing Dapda</a>, All rights reserved 2018.</p>
+                        </footer>
+                    </div>
+                </diV>
             </div>
         {% endblock %}
         {% block javascripts %}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-            <script src="{{ asset('js/promocion.js') }}"></script>
+            <script src="{{ asset('js/landing/promocion.js') }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -28,17 +28,31 @@ class LandingController extends AbstractController
         $client = new Client();
 
         $form = $this->createFormBuilder($client, array('attr'=>array('id' =>'promoForm')))
-            ->add('Name', TextType::class, array('label' => 'Nombre'))
-            ->add('Surname', TextType::class, array('label' => 'Apellidos'))
+            ->add('Name', TextType::class, array(
+                'label' => 'Nombre',
+                'attr' =>array('class'=>'form-control'),
+                'label_attr' => array('class' =>'control-label')
+                ))
+            ->add('Surname', TextType::class, array(
+                'label' => 'Apellidos',
+                'attr' =>array('class'=>'form-control'),
+                'label_attr' => array('class' =>'control-label')
+                ))
             ->add('Phone', TextType::class, array(
                 'label' => 'Telefono',
-                'required' => false,             
+                'required' => false,
+                'attr' =>array('class'=>'form-control'),
+                'label_attr' => array('class' =>'control-label'),             
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => '/^[9|6|7][0-9]{8}$/',
                         'message' => 'Indique un numero valido'))
             )))
-            ->add('Email', EmailType::class, array('label' => 'Email'))
+            ->add('Email', EmailType::class, array(
+                'label' => 'Email',
+                'attr' =>array('class'=>'form-control'),
+                'label_attr' => array('class' =>'control-label')
+                ))
             ->add('Car_type', ChoiceType::class, array( 
                 'label' => 'Tipo de vehículo',
                 'placeholder' => 'Seleccione tipo',
@@ -47,18 +61,22 @@ class LandingController extends AbstractController
                     'Todo terreno' => 1,
                     'Comercial' => 2
                 ),
-                'attr' => array('class' => 'carType')
+                'attr' => array('class' => 'carType form-control'),
+                'label_attr' => array('class' =>'control-label')
             )) 
             ->add('Car', ChoiceType::class, array( 
                 'label' => 'Vehículo',
                 'placeholder' => 'Seleccione marca',
                 'disabled' => true, 
                 'choices' => array(),
-                'attr' => array('class' => 'car')
+                'attr' => array('class' => 'car form-control'),
+                'label_attr' => array('class' =>'control-label')
             ))  
             ->add('Preference_call', ChoiceType::class, array( 
                 'label' => 'Preferencia',
                 'placeholder' => 'Seleccione preferencia',
+                'attr' =>array('class'=>'form-control'),
+                'label_attr' => array('class' =>'control-label'),
                 'choices' => array(
                     'Mañana' => 0,
                     'Tarde' => 1,
@@ -66,7 +84,10 @@ class LandingController extends AbstractController
                 ),
                 'disabled' => false
             ))             
-            ->add('Send', SubmitType::class, array('label' => 'Enviar'))
+            ->add('Send', SubmitType::class, array(
+                'label' => 'Enviar',
+                'attr' =>array('class'=>'btn btn-warning')
+                ))
             ->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'))
             ->getForm();
 
@@ -74,7 +95,6 @@ class LandingController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {    
-
             //try{        
                 $client = $form->getData();  
                 $entityManager->persist($client);

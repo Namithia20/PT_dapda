@@ -38,9 +38,9 @@ $(document).ready(function(){
     /**
      * Loading experience
      */
-    $(function() {
+    
         $('#promoForm').on('submit', function() {
             $('#wait_lightbox').show(0);
         });
-    });
+   
 });

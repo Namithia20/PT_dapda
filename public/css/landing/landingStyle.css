@@ -1,0 +1,43 @@
+body{
+    background-color: #cccccc !important;    
+}
+
+.landing{
+    margin-top:10px;
+    background-color: white;    
+    border-radius: 25px;
+}
+
+.form-landing{
+    padding: 50px;
+}
+
+label{
+    margin-top: 10px !important;
+}
+
+.title_form{
+ background-color: black;
+ color:yellow;
+ font-size: 30pt;
+ text-align: center;
+ font-family: Impact, Charcoal, sans-serif;
+}
+
+.foot{
+    color:black; 
+    text-decoration:none;
+    text-align: center;
+}
+
+.text_info_thanks{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15pt;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.thanks_message{
+    padding:50px;
+}
