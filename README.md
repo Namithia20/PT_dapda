@@ -7,7 +7,7 @@ Instrucciones de instalación para la prueba técnica de DAPDA.
 	
 * Clonar el repositorio de git
 
-* Iniciar XAMPP y arrancar los servicios de Apache y MySQL
+* Iniciar XAMPP-Control y arrancar el servicio de MySQL
 	
 * Desde PHPmyAdmin:
 	-> crear BDD "dapda_promo" y 
